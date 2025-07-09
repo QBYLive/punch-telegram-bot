@@ -5,7 +5,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 from apscheduler.schedulers.background import BackgroundScheduler
 
 BOT_TOKEN = "7641013721:AAFmK69lAfZDDZGvEqPT3xPn0dblhBl9eZ4"
-USERNAME = 7650968562  # Заміни на потрібний username
+USERNAME = 7570836848  # Заміни на потрібний username
 API_KEY = "qRptHWNir0haRqH5o3sVVe2XrOqtqi"
 BALANCE_URL = f"https://daisysms.com/stubs/handler_api.php?api_key={API_KEY}&action=getBalance"
 
@@ -24,11 +24,9 @@ def get_balance():
         return f"⚠️ Помилка: {e}"
 
 # Функція для автопінгу
-import asyncio
-
-async def auto_ping_balance(app):
+def auto_ping_balance(app):
     message = get_balance()
-    await app.bot.send_message(chat_id=USER_CHAT_ID, text=f"📅 Автоперевірка о 10:00\n{message}")
+    app.bot.send_message(chat_id=7650968562, text=f"📅 Саме час показати баланс 🐧🫢\n{message}")
 
 # Команда /balance
 async def balance_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -41,11 +39,9 @@ def main():
     app.add_handler(CommandHandler("balance", balance_command))
 
     # Розклад на 10:00 за Києвом
-    from apscheduler.schedulers.asyncio import AsyncIOScheduler
-
-scheduler = AsyncIOScheduler(timezone="Europe/Kiev")
-scheduler.add_job(lambda: asyncio.create_task(auto_ping_balance(app)), 'cron', hour=10, minute=0)
-scheduler.start()
+    scheduler = BackgroundScheduler(timezone="Europe/Kiev")
+    scheduler.add_job(auto_ping_balance, trigger='cron', hour=10, minute=0, args=[app])
+    scheduler.start()
 
     app.run_polling()
 
