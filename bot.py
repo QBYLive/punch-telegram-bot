@@ -5,7 +5,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 from apscheduler.schedulers.background import BackgroundScheduler
 
 BOT_TOKEN = "7641013721:AAFmK69lAfZDDZGvEqPT3xPn0dblhBl9eZ4"
-USERNAME = "@Alex_FarmPunch"  # Заміни на потрібний username
+USERNAME = 7570836848  # Заміни на потрібний username
 API_KEY = "qRptHWNir0haRqH5o3sVVe2XrOqtqi"
 BALANCE_URL = f"https://daisysms.com/stubs/handler_api.php?api_key={API_KEY}&action=getBalance"
 
@@ -36,7 +36,7 @@ async def balance_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Основна функція
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
-    app.add_handler(CommandHandler("баланс", balance_command))
+    app.add_handler(CommandHandler("balance", balance_command))
 
     # Розклад на 10:00 за Києвом
     scheduler = BackgroundScheduler(timezone="Europe/Kiev")
